@@ -5,40 +5,40 @@
     android:layout_height= "match_parent"
     android:orientation= "vertical"
     android:gravity= "center_horizontal"
-    android:padding= "16dp" >
+    android:padding= "@dimen/LL_padding" >
     <TextView
-        android:id ="@+id/tv_1"
+        android:id ="@+id/tv_one"
         android:layout_width= "wrap_content"
         android:layout_height= "wrap_content"
         android:text ="@string/counter_one" />
     <Button
-        android:id ="@+id/btn_counter1"
+        android:id ="@+id/btn_counter_one"
         android:layout_width= "wrap_content"
         android:layout_height= "wrap_content"
-        app:layout_constraintTop_toBottomOf= "@id/tv_1"
+        app:layout_constraintTop_toBottomOf= "@id/tv_one"
         android:text ="0" />
     <TextView
-        android:id ="@+id/tv_2"
+        android:id ="@+id/tv_two"
         android:layout_width= "wrap_content"
         android:layout_height= "wrap_content"
-        app:layout_constraintTop_toBottomOf= "@id/btn_counter1"
+        app:layout_constraintTop_toBottomOf= "@id/btn_counter_one"
         android:text ="@string/counter_two" />
     <Button
-        android:id ="@+id/btn_counter2"
+        android:id ="@+id/btn_counter_two"
         android:layout_width= "wrap_content"
         android:layout_height= "wrap_content"
-        app:layout_constraintTop_toBottomOf= "@id/tv_2"
+        app:layout_constraintTop_toBottomOf= "@id/tv_two"
         android:text ="0" />
     <TextView
-        android:id ="@+id/tv_3"
+        android:id ="@+id/tv_three"
         android:layout_width= "wrap_content"
         android:layout_height= "wrap_content"
-        app:layout_constraintTop_toBottomOf= "@id/btn_counter2"
+        app:layout_constraintTop_toBottomOf= "@id/btn_counter_two"
         android:text ="@string/counter_three" />
     <Button
-        android:id ="@+id/btn_counter3"
+        android:id ="@+id/btn_counter_three"
         android:layout_width= "wrap_content"
         android:layout_height= "wrap_content"
-        app:layout_constraintTop_toBottomOf= "@id/tv_3"
+        app:layout_constraintTop_toBottomOf= "@id/tv_three"
         android:text ="0" />
 </LinearLayout>

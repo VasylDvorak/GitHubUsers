@@ -1,5 +1,9 @@
 package com.popularlibraries.ui
 
 interface MainView {
-    fun setButtonText (index: Int , text: String )
+
+    fun setButtonTextBtnCounterOne(text: String)
+    fun setButtonTextBtnCounterTwo(text: String)
+    fun setButtonTextBtnCounterThree(text: String)
+
 }
