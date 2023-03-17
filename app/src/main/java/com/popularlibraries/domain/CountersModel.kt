@@ -1,4 +1,4 @@
-package com.popularlibraries.model
+package com.popularlibraries.domain
 
 class CountersModel {
     val counters = mutableListOf(0, 0, 0)
