@@ -1,51 +1,45 @@
 package com.popularlibraries.ui
 
 import android.os.Bundle
-import androidx.appcompat.app.AppCompatActivity
+//import com.arellomobile.mvp.MvpAppCompatActivity
+import com.github.terrakok.cicerone.androidx.AppNavigator
+import com.popularlibraries.App
+import com.popularlibraries.R
 import com.popularlibraries.databinding.ActivityMainBinding
-import com.popularlibraries.domain.CountersModel
+import com.popularlibraries.ui.interfaces.BackButtonListener
+import com.popularlibraries.ui.interfaces.MainView
+import com.popularlibraries.ui.presenters.MainPresenter
+import moxy.MvpAppCompatActivity
+import moxy.ktx.moxyPresenter
 
+class MainActivity : MvpAppCompatActivity(), MainView {
+    val navigator = AppNavigator( this , R.id.container)
 
-class MainActivity : AppCompatActivity(), CounterContract.MainView {
+  private val presenter  by  moxyPresenter { MainPresenter(App.instance.router, AndroidScreens()) }
+
     private var vb: ActivityMainBinding? = null
-    private lateinit var presenter: CounterContract.Presenter
-
-    //  val presenter = MainPresenter(this)
-
-    override fun onCreate(savedInstanceState: Bundle?) {
+    override fun onCreate (savedInstanceState: Bundle ?) {
         super.onCreate(savedInstanceState)
+
         vb = ActivityMainBinding.inflate(layoutInflater)
         setContentView(vb?.root)
-        presenter = MainPresenter(CountersModel())
-        presenter.attach(this)
 
-        vb?.apply {
-            with(presenter) {
-                btnCounterOne.setOnClickListener { setButtonTextBtnCounterOnePresenter() }
-                btnCounterTwo.setOnClickListener { setButtonTextBtnCounterTwoPresenter() }
-                btnCounterThree.setOnClickListener { setButtonTextBtnCounterThreePresenter() }
+    }
+    override fun onResumeFragments () {
+        super.onResumeFragments()
+        App.instance.navigatorHolder.setNavigator(navigator)
+    }
+    override fun onPause () {
+        super.onPause()
+        App.instance.navigatorHolder.removeNavigator()
+    }
+    override fun onBackPressed () {
+        supportFragmentManager.fragments.forEach {
+            if (it is BackButtonListener && it.backPressed()){
+                return
             }
         }
 
+        presenter.backClicked()
     }
-    //Подсказка к ПЗ: поделить на 3 отдельные функции и избавиться от index
-
-    override fun setButtonTextBtnCounterOneMainView(text: String) {
-        vb?.btnCounterOne?.text = text
-    }
-
-    override fun setButtonTextBtnCounterTwoMainView(text: String) {
-        vb?.btnCounterTwo?.text = text
-    }
-
-    override fun setButtonTextBtnCounterThreeMainView(text: String) {
-        vb?.btnCounterThree?.text = text
-    }
-
-
-    override fun onDestroy() {
-        presenter.detach()
-        super.onDestroy()
-    }
-
 }
