@@ -1,44 +1,12 @@
 <?xml version ="1.0" encoding= "utf-8" ?>
-<LinearLayout xmlns:android= "http://schemas.android.com/apk/res/android"
-    xmlns:app= "http://schemas.android.com/apk/res-auto"
-    android:layout_width= "match_parent"
-    android:layout_height= "match_parent"
-    android:orientation= "vertical"
-    android:gravity= "center_horizontal"
-    android:padding= "@dimen/LL_padding" >
-    <TextView
-        android:id ="@+id/tv_one"
-        android:layout_width= "wrap_content"
-        android:layout_height= "wrap_content"
-        android:text ="@string/counter_one" />
-    <Button
-        android:id ="@+id/btn_counter_one"
-        android:layout_width= "wrap_content"
-        android:layout_height= "wrap_content"
-        app:layout_constraintTop_toBottomOf= "@id/tv_one"
-        android:text ="0" />
-    <TextView
-        android:id ="@+id/tv_two"
-        android:layout_width= "wrap_content"
-        android:layout_height= "wrap_content"
-        app:layout_constraintTop_toBottomOf= "@id/btn_counter_one"
-        android:text ="@string/counter_two" />
-    <Button
-        android:id ="@+id/btn_counter_two"
-        android:layout_width= "wrap_content"
-        android:layout_height= "wrap_content"
-        app:layout_constraintTop_toBottomOf= "@id/tv_two"
-        android:text ="0" />
-    <TextView
-        android:id ="@+id/tv_three"
-        android:layout_width= "wrap_content"
-        android:layout_height= "wrap_content"
-        app:layout_constraintTop_toBottomOf= "@id/btn_counter_two"
-        android:text ="@string/counter_three" />
-    <Button
-        android:id ="@+id/btn_counter_three"
-        android:layout_width= "wrap_content"
-        android:layout_height= "wrap_content"
-        app:layout_constraintTop_toBottomOf= "@id/tv_three"
-        android:text ="0" />
-</LinearLayout>
+<LinearLayout xmlns:android ="http://schemas.android.com/apk/res/android"
+    android:layout_width ="match_parent"
+    android:layout_height ="match_parent"
+    android:gravity ="center_horizontal"
+    android:orientation ="vertical" >
+    <FrameLayout
+        android:id ="@+id/container"
+        android:layout_width ="match_parent"
+        android:layout_height ="match_parent" />
+</LinearLayout >
+
