@@ -4,13 +4,13 @@ package com.popularlibraries.ui.presenters
 import android.annotation.SuppressLint
 import com.github.terrakok.cicerone.Router
 import com.popularlibraries.data.GithubUser
-import com.popularlibraries.data.GithubUsersRepo
+import com.popularlibraries.domain.DataFlow
 import com.popularlibraries.ui.UserItemView
 import com.popularlibraries.ui.interfaces.IScreens
 import com.popularlibraries.ui.interfaces.UsersView
 import moxy.MvpPresenter
 
-class UsersPresenter (val usersRepo: GithubUsersRepo, val router: Router, val screens: IScreens) :
+class UsersPresenter (val router: Router, val screens: IScreens) :
     MvpPresenter<UsersView>() {
 
     class UsersListPresenter : IUserListPresenter {
@@ -37,7 +37,7 @@ class UsersPresenter (val usersRepo: GithubUsersRepo, val router: Router, val sc
        }
     }
     fun loadData () {
-        val users = usersRepo.getUsers()
+        val users = DataFlow().exec()
         usersListPresenter.users.addAll(users)
         viewState.updateList()
     }
