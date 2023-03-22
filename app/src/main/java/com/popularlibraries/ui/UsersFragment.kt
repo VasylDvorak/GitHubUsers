@@ -2,10 +2,10 @@ package com.popularlibraries.ui
 
 import android.os.Bundle
 import android.view.LayoutInflater
+import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.popularlibraries.App
-import com.popularlibraries.data.GithubUsersRepo
 import com.popularlibraries.databinding.FragmentUsersBinding
 import com.popularlibraries.ui.interfaces.BackButtonListener
 import com.popularlibraries.ui.interfaces.UsersView
@@ -15,28 +15,54 @@ import moxy.ktx.moxyPresenter
 
 class UsersFragment : MvpAppCompatFragment(), UsersView, BackButtonListener {
     companion object {
-        fun newInstance () = UsersFragment()
+        fun newInstance() = UsersFragment()
     }
-   private val presenter: UsersPresenter by moxyPresenter {
-        UsersPresenter( App.instance.router, AndroidScreens()) }
+
+
+    private val presenter: UsersPresenter by moxyPresenter {
+        UsersPresenter(App.instance.router, AndroidScreens())
+    }
     var adapter: UsersRVAdapter? = null
     private var vb: FragmentUsersBinding? = null
-    override fun onCreateView (inflater: LayoutInflater, container: ViewGroup?,
-                               savedInstanceState: Bundle?) =
-        FragmentUsersBinding.inflate(inflater, container, false ).also {
+    override fun onCreateView(
+        inflater: LayoutInflater, container: ViewGroup?,
+        savedInstanceState: Bundle?
+    ) =
+        FragmentUsersBinding.inflate(inflater, container, false).also {
             vb = it
         }.root
-    override fun onDestroyView () {
+
+
+    override fun onDestroyView() {
         super.onDestroyView()
         vb = null
     }
-    override fun init () {
-        vb?.rvUsers?.layoutManager = LinearLayoutManager(context)
+
+    override fun init() {
+        vb?.apply {
+        rvUsers?.layoutManager = LinearLayoutManager(context)
+        switchMap?.setOnClickListener {
+            switchMapDescription?.visibility=View.VISIBLE
+            initAdapter(true)
+        }
+
+        concatMap?.setOnClickListener {
+            switchMapDescription?.visibility=View.GONE
+            initAdapter(false)
+        }
+    }
+    }
+
+    private fun initAdapter(switch_map: Boolean) {
+        presenter.loadData(switch_map)
         adapter = UsersRVAdapter(presenter.usersListPresenter)
         vb?.rvUsers?.adapter = adapter
     }
-    override fun updateList () {
+
+    override fun updateList() {
         adapter?.notifyDataSetChanged()
     }
-    override fun backPressed () = presenter.backPressed()
+
+    override fun backPressed() = presenter.backPressed()
+
 }
