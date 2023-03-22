@@ -41,7 +41,8 @@ class UsersPresenter(var router: Router, var screens: IScreens) :
     }
 
     fun loadData(switch_map: Boolean) {
-
+        usersListPresenter.users.clear()
+        viewState.updateList()
         val handler = Handler()
         Thread {
             var users: List<GithubUser>
@@ -52,13 +53,10 @@ class UsersPresenter(var router: Router, var screens: IScreens) :
             }
             handler.post { updateViewList(users) }
         }.start()
-
-
     }
 
     private fun updateViewList(users: List<GithubUser>) {
-        usersListPresenter.users.clear()
-        usersListPresenter.users.addAll(users)
+       usersListPresenter.users.addAll(users)
         viewState.updateList()
     }
 
