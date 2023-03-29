@@ -8,7 +8,18 @@
     <string name="user_data">Данные пользователя:</string>
     <string name="get_last_user">Получить последнего пользователя</string>
     <string name="show_all_users">Отобразить всех полизователей</string>
-    <string name="description_switch_map">SwitchMap() кардинально отличается от FlatMap() и ConcatMap(). Он лучше всего подходит, если вы хотите проигнорировать промежуточные результаты и рассмотреть последний. SwitchMap отписывается от предыдущего источника Observable всякий раз, когда новый элемент начинает излучать данные, тем самым всегда эмитит данные из текущего Observable.</string>
-
+    <string name="textView_default_bottom_string_for_item_holder">Нижняя строка карточки</string>
+    <string name="ImageView_contentDescription_add_to_favorites">Иконка статуса нахождения в избранном / отслеживаемом</string>
+    <string name="ImageView_contentDescription_error">Иконка сообщающая о налицчии ошибки</string>
+    <string name="btn_image_selection_text">Выбрать изображение</string>
+    <string name="btn_abort_converse_text">Прервать процесс конвертации</string>
+    <string name="btn_go_to_image_converter_text">Конвертер изображений</string>
+    <string name="error_message_not_uri">Ошибка: Uri = null (не передан)</string>
+    <string name="repository_information">Информация об репозитории:</string>
+    <string name="id">\ID: \</string>
+    <string name="repos_information">\Имя репозитория: \</string>
+    <string name="fork_count">\Количество форков: \</string>
+    <string name="users_list">Список пользователей</string>
+    <string name="repositories_list">Список репозиториев</string>
 
 </resources>

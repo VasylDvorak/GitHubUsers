@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_gravity="center"
+    android:orientation="vertical"
+    tools:context=".ui.AboutRepositoryFragment">
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="left"
+        android:text="@string/repository_information"
+        android:textColor="@android:color/holo_green_dark"
+        android:textSize="@dimen/text_size" />
+
+    <TextView
+        android:id="@+id/repository_id"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="left"
+        android:textColor="@android:color/holo_orange_dark"
+        android:textSize="@dimen/text_size" />
+
+    <TextView
+        android:id="@+id/repository_name"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="left"
+        android:textColor="@android:color/holo_purple"
+        android:textSize="@dimen/text_size" />
+
+    <TextView
+        android:id="@+id/forks"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="left"
+        android:textColor="@android:color/holo_blue_dark"
+        android:textSize="@dimen/text_size" />
+
+</LinearLayout>
