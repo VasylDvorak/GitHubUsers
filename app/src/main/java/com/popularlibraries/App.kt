@@ -9,6 +9,7 @@ class App : Application() {
 
     companion object {
         lateinit var instance: App
+        var appInstance: App? = null  // Оставил для вызова App.appInstance?.applicationContext из любого места программы
     }
 
     private val cicerone: Cicerone<Router> by lazy { Cicerone.create() }

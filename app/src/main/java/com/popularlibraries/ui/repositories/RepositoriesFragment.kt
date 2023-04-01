@@ -21,7 +21,7 @@ import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers
 import moxy.MvpAppCompatFragment
 import moxy.ktx.moxyPresenter
 
-const val URL_REQUEST = "url"
+const val CURRENT_USER = "current_user"
 
 class RepositoriesFragment : MvpAppCompatFragment(), UsersView, BackButtonListener {
 
@@ -57,7 +57,7 @@ class RepositoriesFragment : MvpAppCompatFragment(), UsersView, BackButtonListen
         savedInstanceState: Bundle?
     ): View {
 
-        currentUser = (arguments?.getParcelable(URL_REQUEST) as GithubUser?)!!
+        currentUser = (arguments?.getParcelable(CURRENT_USER) as GithubUser?)!!
         _vb = FragmentRepositoriesBinding.inflate(inflater, container, false)
 
         return vb.root
