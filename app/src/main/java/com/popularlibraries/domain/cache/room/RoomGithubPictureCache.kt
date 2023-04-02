@@ -39,7 +39,7 @@ class RoomGithubPictureCache(private val db: Database) : IGithubPictureCache {
             Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_PICTURES)
                 .toString() + "/GitHubUsers"
         File(path).delete()
-        db.pictureDao.deleteAll()
+       // db.pictureDao.deleteAll()
     }
 
 }

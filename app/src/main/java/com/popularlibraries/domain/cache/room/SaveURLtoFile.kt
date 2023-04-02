@@ -50,12 +50,12 @@ class SaveURLtoFile {
 
         try {
             outputStream!!.flush()
-        } catch (e: IOException) {
+        } catch (e: NullPointerException) {
             e.printStackTrace()
         }
         try {
             outputStream!!.close()
-        } catch (e: IOException) {
+        } catch (e: NullPointerException) {
             e.printStackTrace()
         }
         return file.path
