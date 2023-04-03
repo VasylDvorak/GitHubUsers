@@ -9,10 +9,9 @@ import io.reactivex.rxjava3.schedulers.Schedulers
 
 class RetrofitGithubRepositoriesRepo(
     val api: IDataSource, val networkStatus:
-    INetworkStatus, private val  db: Database
+    INetworkStatus, val repositoriesCache: RoomGithubRepositoriesCache
 ) : IGithubRepositoriesRepo {
 
-    private val repositoriesCache = RoomGithubRepositoriesCache(db)
 
     override fun getRepositories(user: GithubUser) =
         networkStatus.isOnlineSingle().flatMap { isOnline ->

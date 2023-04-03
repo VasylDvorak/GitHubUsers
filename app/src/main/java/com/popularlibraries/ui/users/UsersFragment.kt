@@ -7,6 +7,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import com.popularlibraries.App
 import com.popularlibraries.databinding.FragmentUsersBinding
 import com.popularlibraries.domain.api.ApiHolder
+import com.popularlibraries.domain.cache.room.RoomGithubUsersCache
 import com.popularlibraries.domain.network.AndroidNetworkStatus
 import com.popularlibraries.domain.repo.retrofit.RetrofitGithubUsersRepo
 import com.popularlibraries.entity.room.Database
@@ -30,7 +31,7 @@ class UsersFragment : MvpAppCompatFragment(), UsersView, BackButtonListener {
             AndroidSchedulers.mainThread(),
             RetrofitGithubUsersRepo(
                 ApiHolder().api, AndroidNetworkStatus(App.instance),
-                Database.getInstance()
+                RoomGithubUsersCache(Database.getInstance())
             ),
             App.instance.router, AndroidScreens()
         )
