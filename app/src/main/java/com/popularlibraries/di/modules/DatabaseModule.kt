@@ -16,13 +16,21 @@ import javax.inject.Singleton
 class DatabaseModule {
     @Singleton
     @Provides
-    fun database(app: App): Database= Room.databaseBuilder(app, Database::class.java, Database.DB_NAME).build()
-
-
+    fun database(app: App): Database= Room.databaseBuilder(app, Database::class.java,
+        Database.DB_NAME).build()
+    @Singleton
+    @Provides
+    fun roomGithubUsersCache(database: Database): RoomGithubUsersCache
+    = RoomGithubUsersCache(database)
+    @Singleton
+    @Provides
+    fun roomGithubRepositoriesCache(database: Database): RoomGithubRepositoriesCache
+    = RoomGithubRepositoriesCache(database)
 
     @Singleton
     @Provides
-    fun repositoriesCache(database: Database): IGithubRepositoriesCache =  RoomGithubRepositoriesCache(database)
+    fun repositoriesCache(database: Database): IGithubRepositoriesCache
+    =  RoomGithubRepositoriesCache(database)
 
 
 

@@ -25,7 +25,6 @@ class RoomGithubPictureCache(private val db: Database) : IGithubPictureCache {
     }
 
 
-
     override fun fromDataBaseData(): Single<List<GithubPicture>> {
         return Single.fromCallable {
             db.pictureDao.getAll().map {
