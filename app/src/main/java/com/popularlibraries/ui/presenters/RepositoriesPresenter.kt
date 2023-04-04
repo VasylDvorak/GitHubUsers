@@ -2,22 +2,28 @@ package com.popularlibraries.ui.presenters
 
 import android.annotation.SuppressLint
 import com.github.terrakok.cicerone.Router
+import com.popularlibraries.domain.repo.IGithubUsersRepo
 import com.popularlibraries.domain.repo.ReposItemView
 import com.popularlibraries.domain.repo.retrofit.IGithubRepositoriesRepo
 import com.popularlibraries.entity.GithubRepository
 import com.popularlibraries.entity.GithubUser
+import com.popularlibraries.ui.AndroidScreens
 import com.popularlibraries.ui.interfaces.IScreens
 import com.popularlibraries.ui.interfaces.UsersView
 import io.reactivex.rxjava3.core.Scheduler
 import moxy.MvpPresenter
+import javax.inject.Inject
 
 class RepositoriesPresenter(
-    val mainThreadScheduler: Scheduler,
-    val usersRepo: IGithubRepositoriesRepo,
-    var router: Router,
-    var screens: IScreens
+    val mainThreadScheduler: Scheduler
 ) :
     MvpPresenter<UsersView>() {
+
+    @Inject
+    lateinit var usersRepo: IGithubRepositoriesRepo
+    @Inject
+    lateinit var router:Router
+
 
     class RepositoriesListPresenter : RepositListPresenter {
         val repositories = mutableListOf<GithubRepository>()
@@ -55,13 +61,13 @@ class RepositoriesPresenter(
             val infoRepository = repositoriesListPresenter.repositories[itemView.pos]
 
 
-            router.navigateTo(screens.aboutRepository(infoRepository))
+            router.navigateTo(AndroidScreens().aboutRepository(infoRepository))
         }
     }
 
 
     fun backPressed(): Boolean {
-        router.replaceScreen(screens.users())
+        router.replaceScreen(AndroidScreens().users())
         return true
     }
 }

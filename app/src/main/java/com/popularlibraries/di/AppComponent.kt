@@ -4,6 +4,7 @@ import com.popularlibraries.di.modules.*
 import com.popularlibraries.domain.cache.room.RoomGithubUsersCache
 import com.popularlibraries.ui.MainActivity
 import com.popularlibraries.ui.presenters.MainPresenter
+import com.popularlibraries.ui.presenters.RepositoriesPresenter
 import com.popularlibraries.ui.presenters.UsersPresenter
 import com.popularlibraries.ui.repositories.RepositoriesFragment
 import com.popularlibraries.ui.users.UsersFragment
@@ -24,6 +25,7 @@ interface AppComponent {
     fun inject(mainActivity: MainActivity)
     fun inject(mainPresenter: MainPresenter)
     fun inject(usersPresenter: UsersPresenter)
+    fun inject(repositoriesPresenter: RepositoriesPresenter)
 
 
     //ДЗ избавиться от зависимостей ниже

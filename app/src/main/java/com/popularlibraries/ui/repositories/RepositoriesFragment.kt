@@ -30,7 +30,8 @@ class RepositoriesFragment : MvpAppCompatFragment(), UsersView, BackButtonListen
 //ДЗ избавиться от иньекции ниже
     @Inject
     lateinit var router: Router
-    @Inject lateinit var database: Database
+    @Inject
+    lateinit var database: Database
 
     private lateinit var currentUser: GithubUser
 
@@ -49,13 +50,9 @@ class RepositoriesFragment : MvpAppCompatFragment(), UsersView, BackButtonListen
 
     private val presenter: RepositoriesPresenter by moxyPresenter {
         RepositoriesPresenter(
-            AndroidSchedulers.mainThread(),
-            RetrofitGithubRepositoriesRepo(
-                ApiHolder().api, AndroidNetworkStatus(App.instance),
-                RoomGithubRepositoriesCache(database)
-            ),
-            router, AndroidScreens()
-        )
+            AndroidSchedulers.mainThread()).apply {
+            App.instance.appComponent.inject(this)
+        }
     }
     var adapter: RepositoriesRVAdapter? = null
 
