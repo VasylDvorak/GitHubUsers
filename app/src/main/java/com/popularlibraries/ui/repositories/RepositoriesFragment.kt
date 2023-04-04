@@ -6,6 +6,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.github.terrakok.cicerone.Router
 import com.popularlibraries.App
 import com.popularlibraries.databinding.FragmentRepositoriesBinding
 import com.popularlibraries.domain.api.ApiHolder
@@ -21,10 +22,15 @@ import com.popularlibraries.ui.presenters.RepositoriesPresenter
 import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers
 import moxy.MvpAppCompatFragment
 import moxy.ktx.moxyPresenter
+import javax.inject.Inject
 
 const val CURRENT_USER = "current_user"
 
 class RepositoriesFragment : MvpAppCompatFragment(), UsersView, BackButtonListener {
+//ДЗ избавиться от иньекции ниже
+    @Inject
+    lateinit var router: Router
+    @Inject lateinit var database: Database
 
     private lateinit var currentUser: GithubUser
 
@@ -46,9 +52,9 @@ class RepositoriesFragment : MvpAppCompatFragment(), UsersView, BackButtonListen
             AndroidSchedulers.mainThread(),
             RetrofitGithubRepositoriesRepo(
                 ApiHolder().api, AndroidNetworkStatus(App.instance),
-                RoomGithubRepositoriesCache(Database.getInstance())
+                RoomGithubRepositoriesCache(database)
             ),
-            App.instance.router, AndroidScreens()
+            router, AndroidScreens()
         )
     }
     var adapter: RepositoriesRVAdapter? = null
@@ -57,7 +63,7 @@ class RepositoriesFragment : MvpAppCompatFragment(), UsersView, BackButtonListen
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-
+App.instance.appComponent.inject(this)
         currentUser = (arguments?.getParcelable(CURRENT_USER) as GithubUser?)!!
         _vb = FragmentRepositoriesBinding.inflate(inflater, container, false)
 

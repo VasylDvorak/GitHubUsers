@@ -7,11 +7,9 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import com.popularlibraries.App
 import com.popularlibraries.databinding.FragmentUsersBinding
 import com.popularlibraries.domain.api.ApiHolder
-import com.popularlibraries.domain.cache.room.RoomGithubUsersCache
 import com.popularlibraries.domain.network.AndroidNetworkStatus
 import com.popularlibraries.domain.repo.retrofit.RetrofitGithubUsersRepo
 import com.popularlibraries.entity.room.Database
-import com.popularlibraries.ui.AndroidScreens
 import com.popularlibraries.ui.image.GlideImageLoader
 import com.popularlibraries.ui.interfaces.BackButtonListener
 import com.popularlibraries.ui.interfaces.UsersView
@@ -19,8 +17,13 @@ import com.popularlibraries.ui.presenters.UsersPresenter
 import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers
 import moxy.MvpAppCompatFragment
 import moxy.ktx.moxyPresenter
+import javax.inject.Inject
 
 class UsersFragment : MvpAppCompatFragment(), UsersView, BackButtonListener {
+
+    //ДЗ избавиться от иньекции ниже
+    @Inject
+    lateinit var database: Database
     companion object {
         fun newInstance() = UsersFragment()
     }
@@ -29,12 +32,10 @@ class UsersFragment : MvpAppCompatFragment(), UsersView, BackButtonListener {
     private val presenter: UsersPresenter by moxyPresenter {
         UsersPresenter(
             AndroidSchedulers.mainThread(),
-            RetrofitGithubUsersRepo(
-                ApiHolder().api, AndroidNetworkStatus(App.instance),
-                RoomGithubUsersCache(Database.getInstance())
-            ),
-            App.instance.router, AndroidScreens()
-        )
+            ).apply {
+            App.instance.appComponent.inject(this)
+        }
+
     }
     var adapter: UsersRVAdapter? = null
     private var vb: FragmentUsersBinding? = null

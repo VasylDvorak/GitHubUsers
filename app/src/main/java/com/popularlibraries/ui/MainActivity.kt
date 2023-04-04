@@ -6,6 +6,7 @@ import android.os.Bundle
 import android.widget.Toast
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
+import com.github.terrakok.cicerone.NavigatorHolder
 //import com.arellomobile.mvp.MvpAppCompatActivity
 import com.github.terrakok.cicerone.androidx.AppNavigator
 import com.popularlibraries.App
@@ -17,13 +18,20 @@ import com.popularlibraries.ui.interfaces.MainView
 import com.popularlibraries.ui.presenters.MainPresenter
 import moxy.MvpAppCompatActivity
 import moxy.ktx.moxyPresenter
+import javax.inject.Inject
 
 private const val REQUEST_CODE = 100
 
 class MainActivity : MvpAppCompatActivity(), MainView {
+    @Inject
+    lateinit var navigatorHolder: NavigatorHolder
+
     val navigator = AppNavigator(this, R.id.container)
 
-    private val presenter by moxyPresenter { MainPresenter(App.instance.router, AndroidScreens()) }
+    private val presenter by moxyPresenter {
+        MainPresenter().apply {
+            App.instance.appComponent.inject(this)
+        } }
 
     private var vb: ActivityMainBinding? = null
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -31,7 +39,7 @@ class MainActivity : MvpAppCompatActivity(), MainView {
 
         vb = ActivityMainBinding.inflate(layoutInflater)
         setContentView(vb?.root)
-
+App.instance.appComponent.inject(this)
         if (!(ContextCompat.checkSelfPermission(
                 this@MainActivity,
                 Manifest.permission.WRITE_EXTERNAL_STORAGE
@@ -45,12 +53,12 @@ class MainActivity : MvpAppCompatActivity(), MainView {
 
     override fun onResumeFragments() {
         super.onResumeFragments()
-        App.instance.navigatorHolder.setNavigator(navigator)
+        navigatorHolder.setNavigator(navigator)
     }
 
     override fun onPause() {
         super.onPause()
-        App.instance.navigatorHolder.removeNavigator()
+       navigatorHolder.removeNavigator()
     }
 
     override fun onBackPressed() {
