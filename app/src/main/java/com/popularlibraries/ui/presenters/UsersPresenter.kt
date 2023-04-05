@@ -4,7 +4,6 @@ package com.popularlibraries.ui.presenters
 import android.annotation.SuppressLint
 import com.github.terrakok.cicerone.Router
 import com.popularlibraries.domain.repo.IGithubUsersRepo
-import com.popularlibraries.domain.repo.retrofit.RetrofitGithubUsersRepo
 import com.popularlibraries.entity.GithubUser
 import com.popularlibraries.ui.AndroidScreens
 import com.popularlibraries.ui.interfaces.UsersView
@@ -16,6 +15,7 @@ import javax.inject.Inject
 class UsersPresenter(
     val mainThreadScheduler: Scheduler
 ) : MvpPresenter<UsersView>() {
+    //ДЗ избавиться от иньекции ниже
 @Inject
 lateinit var usersRepo:IGithubUsersRepo
 @Inject

@@ -6,32 +6,19 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.LinearLayoutManager
-import com.github.terrakok.cicerone.Router
 import com.popularlibraries.App
 import com.popularlibraries.databinding.FragmentRepositoriesBinding
-import com.popularlibraries.domain.api.ApiHolder
-import com.popularlibraries.domain.cache.room.RoomGithubRepositoriesCache
-import com.popularlibraries.domain.network.AndroidNetworkStatus
-import com.popularlibraries.domain.repo.retrofit.RetrofitGithubRepositoriesRepo
 import com.popularlibraries.entity.GithubUser
-import com.popularlibraries.entity.room.Database
-import com.popularlibraries.ui.AndroidScreens
 import com.popularlibraries.ui.interfaces.BackButtonListener
 import com.popularlibraries.ui.interfaces.UsersView
 import com.popularlibraries.ui.presenters.RepositoriesPresenter
 import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers
 import moxy.MvpAppCompatFragment
 import moxy.ktx.moxyPresenter
-import javax.inject.Inject
 
 const val CURRENT_USER = "current_user"
 
 class RepositoriesFragment : MvpAppCompatFragment(), UsersView, BackButtonListener {
-//ДЗ избавиться от иньекции ниже
-    @Inject
-    lateinit var router: Router
-    @Inject
-    lateinit var database: Database
 
     private lateinit var currentUser: GithubUser
 
@@ -50,7 +37,8 @@ class RepositoriesFragment : MvpAppCompatFragment(), UsersView, BackButtonListen
 
     private val presenter: RepositoriesPresenter by moxyPresenter {
         RepositoriesPresenter(
-            AndroidSchedulers.mainThread()).apply {
+            AndroidSchedulers.mainThread()
+        ).apply {
             App.instance.appComponent.inject(this)
         }
     }
@@ -60,7 +48,6 @@ class RepositoriesFragment : MvpAppCompatFragment(), UsersView, BackButtonListen
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-App.instance.appComponent.inject(this)
         currentUser = (arguments?.getParcelable(CURRENT_USER) as GithubUser?)!!
         _vb = FragmentRepositoriesBinding.inflate(inflater, container, false)
 
