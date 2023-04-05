@@ -15,7 +15,7 @@ import javax.inject.Inject
 class UsersPresenter(
     val mainThreadScheduler: Scheduler
 ) : MvpPresenter<UsersView>() {
-    //ДЗ избавиться от иньекции ниже
+
 @Inject
 lateinit var usersRepo:IGithubUsersRepo
 @Inject

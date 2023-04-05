@@ -39,7 +39,7 @@ class MainActivity : MvpAppCompatActivity(), MainView {
 
         vb = ActivityMainBinding.inflate(layoutInflater)
         setContentView(vb?.root)
-App.instance.appComponent.inject(this)
+ App.instance.appComponent.inject(this)
         if (!(ContextCompat.checkSelfPermission(
                 this@MainActivity,
                 Manifest.permission.WRITE_EXTERNAL_STORAGE

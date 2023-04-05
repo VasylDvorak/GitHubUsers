@@ -49,7 +49,7 @@ class UsersFragment : MvpAppCompatFragment(), UsersView, BackButtonListener {
     override fun init() {
         vb?.apply {
             rvUsers.layoutManager = LinearLayoutManager(context)
-            adapter = UsersRVAdapter(presenter.usersListPresenter, GlideImageLoader())
+            adapter = UsersRVAdapter(presenter.usersListPresenter)
             vb?.rvUsers?.adapter = adapter
         }
     }

@@ -2,8 +2,10 @@ package com.popularlibraries.di.modules
 
 import androidx.room.Room
 import com.popularlibraries.App
+import com.popularlibraries.domain.cache.IGithubPictureCache
 import com.popularlibraries.domain.cache.IGithubRepositoriesCache
 import com.popularlibraries.domain.cache.IGithubUsersCache
+import com.popularlibraries.domain.cache.room.RoomGithubPictureCache
 import com.popularlibraries.domain.cache.room.RoomGithubRepositoriesCache
 import com.popularlibraries.domain.cache.room.RoomGithubUsersCache
 import com.popularlibraries.entity.room.Database
@@ -20,24 +22,26 @@ class DatabaseModule {
         Database.DB_NAME).build()
     @Singleton
     @Provides
-    fun roomGithubUsersCache(database: Database): RoomGithubUsersCache
-    = RoomGithubUsersCache(database)
+    fun roomGithubUsersCache(): RoomGithubUsersCache = RoomGithubUsersCache()
     @Singleton
     @Provides
-    fun roomGithubRepositoriesCache(database: Database): RoomGithubRepositoriesCache
-    = RoomGithubRepositoriesCache(database)
-
-    @Singleton
-    @Provides
-    fun repositoriesCache(database: Database): IGithubRepositoriesCache
-    =  RoomGithubRepositoriesCache(database)
-
-
+    fun roomGithubRepositoriesCache(): RoomGithubRepositoriesCache = RoomGithubRepositoriesCache()
 
     @Singleton
     @Provides
-    fun usersCache(database: Database): IGithubUsersCache= RoomGithubUsersCache(database)
+    fun roomGithubPictureCache(): RoomGithubPictureCache = RoomGithubPictureCache()
+    @Singleton
+    @Provides
+    fun repositoriesCache(): IGithubRepositoriesCache =  RoomGithubRepositoriesCache()
 
+
+    @Singleton
+    @Provides
+    fun usersCache(): IGithubUsersCache= RoomGithubUsersCache()
+
+    @Singleton
+    @Provides
+    fun pictureCache(): IGithubPictureCache = RoomGithubPictureCache()
 
 
 
