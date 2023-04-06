@@ -6,6 +6,7 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.popularlibraries.App
 import com.popularlibraries.databinding.FragmentUsersBinding
+import com.popularlibraries.di.user.UserSubcomponent
 import com.popularlibraries.ui.image.GlideImageLoader
 import com.popularlibraries.ui.interfaces.BackButtonListener
 import com.popularlibraries.ui.interfaces.UsersView
@@ -21,12 +22,13 @@ class UsersFragment : MvpAppCompatFragment(), UsersView, BackButtonListener {
         fun newInstance() = UsersFragment()
     }
 
-
+private var userSubcomponent: UserSubcomponent?=null
     private val presenter: UsersPresenter by moxyPresenter {
+userSubcomponent = App.instance.initUserSubcomponent()
         UsersPresenter(
             AndroidSchedulers.mainThread(),
             ).apply {
-            App.instance.appComponent.inject(this)
+            userSubcomponent?.inject(this)
         }
 
     }
@@ -57,6 +59,11 @@ class UsersFragment : MvpAppCompatFragment(), UsersView, BackButtonListener {
 
     override fun updateList() {
         adapter?.notifyDataSetChanged()
+    }
+
+    override fun release() {
+        userSubcomponent = null
+        App.instance.releaseRepositorySubComponent()
     }
 
     override fun backPressed() = presenter.backPressed()
