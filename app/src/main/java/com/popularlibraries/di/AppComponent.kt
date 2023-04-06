@@ -1,6 +1,7 @@
 package com.popularlibraries.di
 
 import com.popularlibraries.di.modules.*
+import com.popularlibraries.di.user.UserSubcomponent
 import com.popularlibraries.domain.cache.room.RoomGithubPictureCache
 import com.popularlibraries.domain.cache.room.RoomGithubRepositoriesCache
 import com.popularlibraries.domain.cache.room.RoomGithubUsersCache
@@ -20,13 +21,16 @@ import javax.inject.Singleton
         CiceroneModule::class,
         DatabaseModule::class,
         ApiModule::class,
-        RepoModule::class
+        ImageModule::class
     ]
 )
 interface AppComponent {
+    fun userSubcomponent() : UserSubcomponent
+
+
     fun inject(mainActivity: MainActivity)
     fun inject(mainPresenter: MainPresenter)
-    fun inject(usersPresenter: UsersPresenter)
+
     fun inject(repositoriesPresenter: RepositoriesPresenter)
     fun inject(retrofitGithubUsersRepo: RetrofitGithubUsersRepo)
     fun inject(retrofitGithubRepositoriesRepo: RetrofitGithubRepositoriesRepo)
