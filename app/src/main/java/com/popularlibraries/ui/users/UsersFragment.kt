@@ -23,11 +23,10 @@ class UsersFragment : MvpAppCompatFragment(), UsersView, BackButtonListener {
     }
 
 private var userSubcomponent: UserSubcomponent?=null
+
     private val presenter: UsersPresenter by moxyPresenter {
 userSubcomponent = App.instance.initUserSubcomponent()
-        UsersPresenter(
-            AndroidSchedulers.mainThread(),
-            ).apply {
+        UsersPresenter().apply {
             userSubcomponent?.inject(this)
         }
 
@@ -51,7 +50,9 @@ userSubcomponent = App.instance.initUserSubcomponent()
     override fun init() {
         vb?.apply {
             rvUsers.layoutManager = LinearLayoutManager(context)
-            adapter = UsersRVAdapter(presenter.usersListPresenter)
+            adapter = UsersRVAdapter(presenter.usersListPresenter).apply {
+                userSubcomponent?.inject(this)
+            }
             vb?.rvUsers?.adapter = adapter
         }
     }

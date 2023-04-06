@@ -13,7 +13,7 @@ import dagger.Subcomponent
     ]
 )
 interface UserSubcomponent {
-    fun repositorySubcomponent(): RepositorySubcomponent
+   fun repositorySubcomponent(): RepositorySubcomponent
     fun inject(usersPresenter: UsersPresenter)
     fun inject(usersRVAdapter: UsersRVAdapter)
 }

@@ -14,14 +14,7 @@ import javax.inject.Singleton
 
 @Module
 class ImageModule {
-    @Named("cacheDir")
-    @Singleton
-    @Provides
-    fun cacheDir(app: App): File = app.cacheDir
-    @Singleton
-    @Provides
-    fun imageCache(database: Database, @Named("cacheDir") cacheDir: File):
-            IImageCache = RoomImageCache(database, cacheDir)
+
     @Singleton
     @Provides
     fun imageLoader(): IImageLoader<ImageView> = GlideImageLoader()

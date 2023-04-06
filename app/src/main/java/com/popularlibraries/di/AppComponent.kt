@@ -1,6 +1,7 @@
 package com.popularlibraries.di
 
 import com.popularlibraries.di.modules.*
+import com.popularlibraries.di.repository.RepositorySubcomponent
 import com.popularlibraries.di.user.UserSubcomponent
 import com.popularlibraries.domain.cache.room.RoomGithubPictureCache
 import com.popularlibraries.domain.cache.room.RoomGithubRepositoriesCache
@@ -10,7 +11,6 @@ import com.popularlibraries.domain.repo.retrofit.RetrofitGithubUsersRepo
 import com.popularlibraries.ui.MainActivity
 import com.popularlibraries.ui.presenters.MainPresenter
 import com.popularlibraries.ui.presenters.RepositoriesPresenter
-import com.popularlibraries.ui.presenters.UsersPresenter
 import dagger.Component
 import javax.inject.Singleton
 
@@ -27,7 +27,6 @@ import javax.inject.Singleton
 interface AppComponent {
     fun userSubcomponent() : UserSubcomponent
 
-
     fun inject(mainActivity: MainActivity)
     fun inject(mainPresenter: MainPresenter)
 
@@ -37,4 +36,5 @@ interface AppComponent {
     fun inject(roomGithubUsersCache: RoomGithubUsersCache)
     fun inject(roomGithubRepositoriesCache: RoomGithubRepositoriesCache)
     fun inject(roomGithubPictureCache: RoomGithubPictureCache)
+
 }
