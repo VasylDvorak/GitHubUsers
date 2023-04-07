@@ -4,5 +4,11 @@
     <string name="counter_two">Счетчик 2</string>
     <string name="counter_three">Счетчик 3</string>
     <string name="hello_blank_fragment">Hello blank fragment</string>
-    <string name="users_log">Логин пользователя:</string>
+    <string name="users_log">\Логин пользователя: \ </string>
+    <string name="user_data">Данные пользователя:</string>
+    <string name="get_last_user">Получить последнего пользователя</string>
+    <string name="show_all_users">Отобразить всех полизователей</string>
+    <string name="description_switch_map">SwitchMap() кардинально отличается от FlatMap() и ConcatMap(). Он лучше всего подходит, если вы хотите проигнорировать промежуточные результаты и рассмотреть последний. SwitchMap отписывается от предыдущего источника Observable всякий раз, когда новый элемент начинает излучать данные, тем самым всегда эмитит данные из текущего Observable.</string>
+
+
 </resources>
