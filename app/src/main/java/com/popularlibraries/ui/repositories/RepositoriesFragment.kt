@@ -6,10 +6,14 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.LinearLayoutManager
-import com.popularlibraries.domain.api.ApiHolder
 import com.popularlibraries.App
 import com.popularlibraries.databinding.FragmentRepositoriesBinding
-import com.popularlibraries.domain.repo.retrofit.RetrofitGithubUsersRepo
+import com.popularlibraries.domain.api.ApiHolder
+import com.popularlibraries.domain.cache.room.RoomGithubRepositoriesCache
+import com.popularlibraries.domain.network.AndroidNetworkStatus
+import com.popularlibraries.domain.repo.retrofit.RetrofitGithubRepositoriesRepo
+import com.popularlibraries.entity.GithubUser
+import com.popularlibraries.entity.room.Database
 import com.popularlibraries.ui.AndroidScreens
 import com.popularlibraries.ui.interfaces.BackButtonListener
 import com.popularlibraries.ui.interfaces.UsersView
@@ -18,11 +22,11 @@ import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers
 import moxy.MvpAppCompatFragment
 import moxy.ktx.moxyPresenter
 
-const val URL_REQUEST = "url"
+const val CURRENT_USER = "current_user"
 
 class RepositoriesFragment : MvpAppCompatFragment(), UsersView, BackButtonListener {
 
-    private lateinit var url: String
+    private lateinit var currentUser: GithubUser
 
     companion object {
         fun newInstance(bundle: Bundle): RepositoriesFragment {
@@ -40,7 +44,10 @@ class RepositoriesFragment : MvpAppCompatFragment(), UsersView, BackButtonListen
     private val presenter: RepositoriesPresenter by moxyPresenter {
         RepositoriesPresenter(
             AndroidSchedulers.mainThread(),
-            RetrofitGithubUsersRepo(ApiHolder().api),
+            RetrofitGithubRepositoriesRepo(
+                ApiHolder().api, AndroidNetworkStatus(App.instance),
+                RoomGithubRepositoriesCache(Database.getInstance())
+            ),
             App.instance.router, AndroidScreens()
         )
     }
@@ -50,8 +57,8 @@ class RepositoriesFragment : MvpAppCompatFragment(), UsersView, BackButtonListen
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-        url = arguments?.getString(URL_REQUEST).toString()
 
+        currentUser = (arguments?.getParcelable(CURRENT_USER) as GithubUser?)!!
         _vb = FragmentRepositoriesBinding.inflate(inflater, container, false)
 
         return vb.root
@@ -67,9 +74,9 @@ class RepositoriesFragment : MvpAppCompatFragment(), UsersView, BackButtonListen
     override fun init() {
         vb.apply {
             rvRepositories.layoutManager = LinearLayoutManager(context)
-            presenter.loadRepositories(url)
+            currentUser.let { presenter.loadRepositories(it) }
             adapter = RepositoriesRVAdapter(presenter.repositoriesListPresenter)
-            vb.rvRepositories?.adapter = adapter
+            vb.rvRepositories.adapter = adapter
         }
     }
 

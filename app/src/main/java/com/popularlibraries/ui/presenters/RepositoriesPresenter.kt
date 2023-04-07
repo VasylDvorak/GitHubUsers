@@ -2,9 +2,10 @@ package com.popularlibraries.ui.presenters
 
 import android.annotation.SuppressLint
 import com.github.terrakok.cicerone.Router
-import com.popularlibraries.entity.GithubRepository
-import com.popularlibraries.domain.repo.IGithubUsersRepo
 import com.popularlibraries.domain.repo.ReposItemView
+import com.popularlibraries.domain.repo.retrofit.IGithubRepositoriesRepo
+import com.popularlibraries.entity.GithubRepository
+import com.popularlibraries.entity.GithubUser
 import com.popularlibraries.ui.interfaces.IScreens
 import com.popularlibraries.ui.interfaces.UsersView
 import io.reactivex.rxjava3.core.Scheduler
@@ -12,7 +13,7 @@ import moxy.MvpPresenter
 
 class RepositoriesPresenter(
     val mainThreadScheduler: Scheduler,
-    val usersRepo: IGithubUsersRepo,
+    val usersRepo: IGithubRepositoriesRepo,
     var router: Router,
     var screens: IScreens
 ) :
@@ -37,13 +38,14 @@ class RepositoriesPresenter(
 
     }
 
+    fun loadRepositories(currentUser: GithubUser) {
 
-    fun loadRepositories(url: String) {
-        usersRepo.getRepositories(url)
+        usersRepo.getRepositories(currentUser)
             .observeOn(mainThreadScheduler)
             .subscribe({ repos ->
                 repositoriesListPresenter.repositories.clear()
                 repositoriesListPresenter.repositories.addAll(repos)
+
                 viewState.updateList()
             }, {
                 println("Error: ${it.message} ")

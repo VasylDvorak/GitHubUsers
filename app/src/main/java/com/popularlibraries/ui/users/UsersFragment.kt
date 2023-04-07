@@ -4,10 +4,13 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.LinearLayoutManager
-import com.popularlibraries.domain.api.ApiHolder
 import com.popularlibraries.App
 import com.popularlibraries.databinding.FragmentUsersBinding
+import com.popularlibraries.domain.api.ApiHolder
+import com.popularlibraries.domain.cache.room.RoomGithubUsersCache
+import com.popularlibraries.domain.network.AndroidNetworkStatus
 import com.popularlibraries.domain.repo.retrofit.RetrofitGithubUsersRepo
+import com.popularlibraries.entity.room.Database
 import com.popularlibraries.ui.AndroidScreens
 import com.popularlibraries.ui.image.GlideImageLoader
 import com.popularlibraries.ui.interfaces.BackButtonListener
@@ -26,7 +29,10 @@ class UsersFragment : MvpAppCompatFragment(), UsersView, BackButtonListener {
     private val presenter: UsersPresenter by moxyPresenter {
         UsersPresenter(
             AndroidSchedulers.mainThread(),
-            RetrofitGithubUsersRepo(ApiHolder().api),
+            RetrofitGithubUsersRepo(
+                ApiHolder().api, AndroidNetworkStatus(App.instance),
+                RoomGithubUsersCache(Database.getInstance())
+            ),
             App.instance.router, AndroidScreens()
         )
     }

@@ -3,11 +3,11 @@ package com.popularlibraries.ui.presenters
 
 import android.annotation.SuppressLint
 import com.github.terrakok.cicerone.Router
-import com.popularlibraries.entity.GithubUser
 import com.popularlibraries.domain.repo.IGithubUsersRepo
-import com.popularlibraries.ui.users.UserItemView
+import com.popularlibraries.entity.GithubUser
 import com.popularlibraries.ui.interfaces.IScreens
 import com.popularlibraries.ui.interfaces.UsersView
+import com.popularlibraries.ui.users.UserItemView
 import io.reactivex.rxjava3.core.Scheduler
 import moxy.MvpPresenter
 
@@ -41,10 +41,10 @@ class UsersPresenter(
         loadData()
 
         usersListPresenter.itemClickListener = { itemView ->
-            val url = usersListPresenter.users[itemView.pos].repos_url
+            val currentUser = usersListPresenter.users[itemView.pos]
 //  переход на экран пользователя c помощью router.navigateTo
-            url?.let {
-                router.navigateTo(screens.repositories(url))
+            currentUser.let {
+                router.navigateTo(screens.repositories(currentUser))
             }
         }
     }
