@@ -8,13 +8,14 @@
         android:id="@+id/title"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="@string/users_list"
+        android:text="@string/repositories_list"
         android:textColor="@android:color/holo_green_dark"
+        android:textSize="@dimen/title_size"
         app:layout_constraintLeft_toLeftOf="@+id/guideline"
         app:layout_constraintTop_toTopOf="parent" />
 
     <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/rv_users"
+        android:id="@+id/rv_repositories"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:clipToPadding="false"

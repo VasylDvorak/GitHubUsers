@@ -2,26 +2,33 @@ package com.popularlibraries.ui.presenters
 
 
 import android.annotation.SuppressLint
-import android.os.Handler
 import com.github.terrakok.cicerone.Router
-import com.popularlibraries.data.GithubUser
-import com.popularlibraries.domain.DataFlowConcatMap
-import com.popularlibraries.domain.DataFlowSwitchMap
-import com.popularlibraries.ui.UserItemView
+import com.popularlibraries.entity.GithubUser
+import com.popularlibraries.domain.repo.IGithubUsersRepo
+import com.popularlibraries.ui.users.UserItemView
 import com.popularlibraries.ui.interfaces.IScreens
 import com.popularlibraries.ui.interfaces.UsersView
+import io.reactivex.rxjava3.core.Scheduler
 import moxy.MvpPresenter
 
-class UsersPresenter(var router: Router, var screens: IScreens) :
+class UsersPresenter(
+    val mainThreadScheduler: Scheduler,
+    val usersRepo: IGithubUsersRepo,
+    var router: Router,
+    var screens: IScreens
+) :
     MvpPresenter<UsersView>() {
 
-    class UsersListPresenter : IUserListPresenter {
+    inner class UsersListPresenter : IUserListPresenter {
         val users = mutableListOf<GithubUser>()
         override var itemClickListener: ((UserItemView) -> Unit)? = null
         override fun getCount() = users.size
         override fun bindView(view: UserItemView) {
             val user = users[view.pos]
-            view.setLogin(user.login)
+            user.login.let { view.setName(it) }
+            user.avatar_url?.let {
+                view.loadAvatar(it)
+            }
         }
     }
 
@@ -31,34 +38,29 @@ class UsersPresenter(var router: Router, var screens: IScreens) :
     override fun onFirstViewAttach() {
         super.onFirstViewAttach()
         viewState.init()
+        loadData()
 
         usersListPresenter.itemClickListener = { itemView ->
-            val login = itemView.getLogin()
-
+            val url = usersListPresenter.users[itemView.pos].repos_url
 //  переход на экран пользователя c помощью router.navigateTo
-            router.navigateTo(screens.aboutUser(login))
+            url?.let {
+                router.navigateTo(screens.repositories(url))
+            }
         }
     }
 
-    fun loadData(switch_map: Boolean) {
-        usersListPresenter.users.clear()
-        viewState.updateList()
-        val handler = Handler()
-        Thread {
-            var users: List<GithubUser>
-            if (switch_map) {
-                users = DataFlowSwitchMap().exec()
-            } else {
-                users = DataFlowConcatMap().exec()
-            }
-            handler.post { updateViewList(users) }
-        }.start()
+    fun loadData() {
+        usersRepo.getUsers()
+            .observeOn(mainThreadScheduler)
+            .subscribe({ users ->
+                usersListPresenter.users.clear()
+                usersListPresenter.users.addAll(users)
+                viewState.updateList()
+            }, {
+                println("Error: ${it.message} ")
+            })
     }
 
-    private fun updateViewList(users: List<GithubUser>) {
-       usersListPresenter.users.addAll(users)
-        viewState.updateList()
-    }
 
     fun backPressed(): Boolean {
         router.replaceScreen(screens.users())
