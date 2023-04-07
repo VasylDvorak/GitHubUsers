@@ -5,20 +5,21 @@ import android.annotation.SuppressLint
 import com.github.terrakok.cicerone.Router
 import com.popularlibraries.domain.repo.IGithubUsersRepo
 import com.popularlibraries.entity.GithubUser
-import com.popularlibraries.ui.interfaces.IScreens
+import com.popularlibraries.ui.AndroidScreens
 import com.popularlibraries.ui.interfaces.UsersView
 import com.popularlibraries.ui.users.UserItemView
 import io.reactivex.rxjava3.core.Scheduler
 import moxy.MvpPresenter
+import javax.inject.Inject
 
 class UsersPresenter(
-    val mainThreadScheduler: Scheduler,
-    val usersRepo: IGithubUsersRepo,
-    var router: Router,
-    var screens: IScreens
-) :
-    MvpPresenter<UsersView>() {
+    val mainThreadScheduler: Scheduler
+) : MvpPresenter<UsersView>() {
 
+@Inject
+lateinit var usersRepo:IGithubUsersRepo
+@Inject
+lateinit var router:Router
     inner class UsersListPresenter : IUserListPresenter {
         val users = mutableListOf<GithubUser>()
         override var itemClickListener: ((UserItemView) -> Unit)? = null
@@ -44,7 +45,7 @@ class UsersPresenter(
             val currentUser = usersListPresenter.users[itemView.pos]
 //  переход на экран пользователя c помощью router.navigateTo
             currentUser.let {
-                router.navigateTo(screens.repositories(currentUser))
+                router.navigateTo(AndroidScreens().repositories(currentUser))
             }
         }
     }
@@ -63,7 +64,7 @@ class UsersPresenter(
 
 
     fun backPressed(): Boolean {
-        router.replaceScreen(screens.users())
+        router.replaceScreen(AndroidScreens().users())
         return true
     }
 }

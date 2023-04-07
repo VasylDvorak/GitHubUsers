@@ -8,13 +8,7 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.popularlibraries.App
 import com.popularlibraries.databinding.FragmentRepositoriesBinding
-import com.popularlibraries.domain.api.ApiHolder
-import com.popularlibraries.domain.cache.room.RoomGithubRepositoriesCache
-import com.popularlibraries.domain.network.AndroidNetworkStatus
-import com.popularlibraries.domain.repo.retrofit.RetrofitGithubRepositoriesRepo
 import com.popularlibraries.entity.GithubUser
-import com.popularlibraries.entity.room.Database
-import com.popularlibraries.ui.AndroidScreens
 import com.popularlibraries.ui.interfaces.BackButtonListener
 import com.popularlibraries.ui.interfaces.UsersView
 import com.popularlibraries.ui.presenters.RepositoriesPresenter
@@ -43,13 +37,10 @@ class RepositoriesFragment : MvpAppCompatFragment(), UsersView, BackButtonListen
 
     private val presenter: RepositoriesPresenter by moxyPresenter {
         RepositoriesPresenter(
-            AndroidSchedulers.mainThread(),
-            RetrofitGithubRepositoriesRepo(
-                ApiHolder().api, AndroidNetworkStatus(App.instance),
-                RoomGithubRepositoriesCache(Database.getInstance())
-            ),
-            App.instance.router, AndroidScreens()
-        )
+            AndroidSchedulers.mainThread()
+        ).apply {
+            App.instance.appComponent.inject(this)
+        }
     }
     var adapter: RepositoriesRVAdapter? = null
 
@@ -57,7 +48,6 @@ class RepositoriesFragment : MvpAppCompatFragment(), UsersView, BackButtonListen
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-
         currentUser = (arguments?.getParcelable(CURRENT_USER) as GithubUser?)!!
         _vb = FragmentRepositoriesBinding.inflate(inflater, container, false)
 
