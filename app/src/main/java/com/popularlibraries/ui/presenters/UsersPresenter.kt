@@ -11,15 +11,16 @@ import io.reactivex.rxjava3.core.Scheduler
 import moxy.MvpPresenter
 import javax.inject.Inject
 
-class UsersPresenter(
-   // val mainThreadScheduler: Scheduler
-) : MvpPresenter<UsersView>() {
+class UsersPresenter : MvpPresenter<UsersView>() {
     @Inject
-    lateinit var  mainThreadScheduler: Scheduler
-@Inject
-lateinit var usersRepo:IGithubUsersRepo
-@Inject
-lateinit var router:Router
+    lateinit var mainThreadScheduler: Scheduler
+
+    @Inject
+    lateinit var usersRepo: IGithubUsersRepo
+
+    @Inject
+    lateinit var router: Router
+
     inner class UsersListPresenter : IUserListPresenter {
         val users = mutableListOf<GithubUser>()
         override var itemClickListener: ((UserItemView) -> Unit)? = null
@@ -64,7 +65,7 @@ lateinit var router:Router
 
     override fun onDestroy() {
         super.onDestroy()
-viewState.release()
+        viewState.release()
     }
 
     fun backPressed(): Boolean {

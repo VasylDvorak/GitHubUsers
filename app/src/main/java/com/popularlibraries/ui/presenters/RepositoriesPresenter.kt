@@ -12,16 +12,16 @@ import io.reactivex.rxjava3.core.Scheduler
 import moxy.MvpPresenter
 import javax.inject.Inject
 
-class RepositoriesPresenter(
-   // val mainThreadScheduler: Scheduler
-) : MvpPresenter<UsersView>() {
+class RepositoriesPresenter : MvpPresenter<UsersView>() {
 
     @Inject
     lateinit var mainThreadScheduler: Scheduler
+
     @Inject
     lateinit var repositoriesRepo: IGithubRepositoriesRepo
+
     @Inject
-    lateinit var router:Router
+    lateinit var router: Router
 
 
     class RepositoriesListPresenter : RepositListPresenter {
@@ -69,6 +69,7 @@ class RepositoriesPresenter(
 
         viewState.release()
     }
+
     fun backPressed(): Boolean {
         router.replaceScreen(AndroidScreens().users())
         return true

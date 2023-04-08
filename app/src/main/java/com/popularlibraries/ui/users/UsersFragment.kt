@@ -7,11 +7,9 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import com.popularlibraries.App
 import com.popularlibraries.databinding.FragmentUsersBinding
 import com.popularlibraries.di.user.UserSubcomponent
-import com.popularlibraries.ui.image.GlideImageLoader
 import com.popularlibraries.ui.interfaces.BackButtonListener
 import com.popularlibraries.ui.interfaces.UsersView
 import com.popularlibraries.ui.presenters.UsersPresenter
-import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers
 import moxy.MvpAppCompatFragment
 import moxy.ktx.moxyPresenter
 
@@ -22,10 +20,10 @@ class UsersFragment : MvpAppCompatFragment(), UsersView, BackButtonListener {
         fun newInstance() = UsersFragment()
     }
 
-private var userSubcomponent: UserSubcomponent?=null
+    private var userSubcomponent: UserSubcomponent? = null
 
     private val presenter: UsersPresenter by moxyPresenter {
-userSubcomponent = App.instance.initUserSubcomponent()
+        userSubcomponent = App.instance.initUserSubcomponent()
         UsersPresenter().apply {
             userSubcomponent?.inject(this)
         }

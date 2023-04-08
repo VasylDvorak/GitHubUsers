@@ -1,6 +1,5 @@
 package com.popularlibraries.ui.repositories
 
-import android.annotation.SuppressLint
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -35,12 +34,12 @@ class RepositoriesFragment : MvpAppCompatFragment(), UsersView, BackButtonListen
     private val vb
         get() = _vb!!
 
-    private var repositorySubcomponent: RepositorySubcomponent? =null
+    private var repositorySubcomponent: RepositorySubcomponent? = null
     private val presenter: RepositoriesPresenter by moxyPresenter {
 
         repositorySubcomponent = App.instance.initRepositorySubcomponent()
         RepositoriesPresenter().apply {
-           repositorySubcomponent?.inject(this)
+            repositorySubcomponent?.inject(this)
         }
     }
 
@@ -62,7 +61,7 @@ class RepositoriesFragment : MvpAppCompatFragment(), UsersView, BackButtonListen
         _vb = null
     }
 
-    @SuppressLint("SuspiciousIndentation")
+
     override fun init() {
         vb.apply {
             rvRepositories.layoutManager = LinearLayoutManager(context)
@@ -78,7 +77,7 @@ class RepositoriesFragment : MvpAppCompatFragment(), UsersView, BackButtonListen
     }
 
     override fun release() {
-        repositorySubcomponent=null
+        repositorySubcomponent = null
         App.instance.releaseRepositorySubComponent()
     }
 

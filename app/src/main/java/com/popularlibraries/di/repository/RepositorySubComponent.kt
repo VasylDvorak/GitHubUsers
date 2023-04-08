@@ -7,7 +7,9 @@ import dagger.Subcomponent
 @RepositoryScope
 @Subcomponent(
     modules = [
-        RepositoryModule::class])
+        RepositoryModule::class]
+)
+
 interface RepositorySubcomponent {
     fun inject(repositoryPresenter: RepositoriesPresenter)
 }

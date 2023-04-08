@@ -12,6 +12,7 @@ class AppModule(val app: App) {
     fun app(): App {
         return app
     }
+
     @Provides
-   fun mainThreadScheduler():Scheduler = AndroidSchedulers.mainThread()
+    fun mainThreadScheduler(): Scheduler = AndroidSchedulers.mainThread()
 }
