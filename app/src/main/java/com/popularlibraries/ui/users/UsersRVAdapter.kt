@@ -6,12 +6,13 @@ import android.widget.ImageView
 import androidx.recyclerview.widget.RecyclerView
 import com.popularlibraries.databinding.ItemUserBinding
 import com.popularlibraries.domain.image.IImageLoader
-import com.popularlibraries.ui.image.GlideImageLoader
 import com.popularlibraries.ui.presenters.IUserListPresenter
+import javax.inject.Inject
 
-class UsersRVAdapter(val presenter: IUserListPresenter)
-    : RecyclerView.Adapter<UsersRVAdapter.ViewHolder>() {
-
+class UsersRVAdapter(val presenter: IUserListPresenter) :
+    RecyclerView.Adapter<UsersRVAdapter.ViewHolder>() {
+    @Inject
+    lateinit var imageLoader: IImageLoader<ImageView>
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int) =
         ViewHolder(
@@ -41,7 +42,7 @@ class UsersRVAdapter(val presenter: IUserListPresenter)
 
 
         override fun loadAvatar(url: String) {
-            GlideImageLoader().loadInto(url, vb.ivAvatar)
+            imageLoader.loadInto(url, vb.ivAvatar)
         }
 
     }

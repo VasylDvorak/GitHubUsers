@@ -6,11 +6,10 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.popularlibraries.App
 import com.popularlibraries.databinding.FragmentUsersBinding
-import com.popularlibraries.ui.image.GlideImageLoader
+import com.popularlibraries.di.user.UserSubcomponent
 import com.popularlibraries.ui.interfaces.BackButtonListener
 import com.popularlibraries.ui.interfaces.UsersView
 import com.popularlibraries.ui.presenters.UsersPresenter
-import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers
 import moxy.MvpAppCompatFragment
 import moxy.ktx.moxyPresenter
 
@@ -21,12 +20,12 @@ class UsersFragment : MvpAppCompatFragment(), UsersView, BackButtonListener {
         fun newInstance() = UsersFragment()
     }
 
+    private var userSubcomponent: UserSubcomponent? = null
 
     private val presenter: UsersPresenter by moxyPresenter {
-        UsersPresenter(
-            AndroidSchedulers.mainThread(),
-            ).apply {
-            App.instance.appComponent.inject(this)
+        userSubcomponent = App.instance.initUserSubcomponent()
+        UsersPresenter().apply {
+            userSubcomponent?.inject(this)
         }
 
     }
@@ -49,7 +48,9 @@ class UsersFragment : MvpAppCompatFragment(), UsersView, BackButtonListener {
     override fun init() {
         vb?.apply {
             rvUsers.layoutManager = LinearLayoutManager(context)
-            adapter = UsersRVAdapter(presenter.usersListPresenter)
+            adapter = UsersRVAdapter(presenter.usersListPresenter).apply {
+                userSubcomponent?.inject(this)
+            }
             vb?.rvUsers?.adapter = adapter
         }
     }
@@ -57,6 +58,11 @@ class UsersFragment : MvpAppCompatFragment(), UsersView, BackButtonListener {
 
     override fun updateList() {
         adapter?.notifyDataSetChanged()
+    }
+
+    override fun release() {
+        userSubcomponent = null
+        App.instance.releaseRepositorySubComponent()
     }
 
     override fun backPressed() = presenter.backPressed()

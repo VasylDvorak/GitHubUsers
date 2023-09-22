@@ -5,7 +5,6 @@ import com.popularlibraries.domain.api.IDataSource
 import com.popularlibraries.domain.cache.room.RoomGithubRepositoriesCache
 import com.popularlibraries.domain.network.INetworkStatus
 import com.popularlibraries.entity.GithubUser
-import com.popularlibraries.entity.room.Database
 import io.reactivex.rxjava3.schedulers.Schedulers
 import javax.inject.Inject
 

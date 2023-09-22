@@ -1,7 +1,6 @@
 package com.popularlibraries.ui.presenters
 
 
-import android.annotation.SuppressLint
 import com.github.terrakok.cicerone.Router
 import com.popularlibraries.domain.repo.IGithubUsersRepo
 import com.popularlibraries.entity.GithubUser
@@ -12,14 +11,16 @@ import io.reactivex.rxjava3.core.Scheduler
 import moxy.MvpPresenter
 import javax.inject.Inject
 
-class UsersPresenter(
-    val mainThreadScheduler: Scheduler
-) : MvpPresenter<UsersView>() {
+class UsersPresenter : MvpPresenter<UsersView>() {
+    @Inject
+    lateinit var mainThreadScheduler: Scheduler
 
-@Inject
-lateinit var usersRepo:IGithubUsersRepo
-@Inject
-lateinit var router:Router
+    @Inject
+    lateinit var usersRepo: IGithubUsersRepo
+
+    @Inject
+    lateinit var router: Router
+
     inner class UsersListPresenter : IUserListPresenter {
         val users = mutableListOf<GithubUser>()
         override var itemClickListener: ((UserItemView) -> Unit)? = null
@@ -35,7 +36,7 @@ lateinit var router:Router
 
     val usersListPresenter = UsersListPresenter()
 
-    @SuppressLint("SuspiciousIndentation")
+
     override fun onFirstViewAttach() {
         super.onFirstViewAttach()
         viewState.init()
@@ -62,6 +63,10 @@ lateinit var router:Router
             })
     }
 
+    override fun onDestroy() {
+        super.onDestroy()
+        viewState.release()
+    }
 
     fun backPressed(): Boolean {
         router.replaceScreen(AndroidScreens().users())

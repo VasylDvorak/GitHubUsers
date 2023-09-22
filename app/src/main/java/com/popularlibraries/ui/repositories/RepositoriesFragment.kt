@@ -1,6 +1,5 @@
 package com.popularlibraries.ui.repositories
 
-import android.annotation.SuppressLint
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -8,11 +7,12 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.popularlibraries.App
 import com.popularlibraries.databinding.FragmentRepositoriesBinding
+import com.popularlibraries.di.repository.RepositorySubcomponent
+
 import com.popularlibraries.entity.GithubUser
 import com.popularlibraries.ui.interfaces.BackButtonListener
 import com.popularlibraries.ui.interfaces.UsersView
 import com.popularlibraries.ui.presenters.RepositoriesPresenter
-import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers
 import moxy.MvpAppCompatFragment
 import moxy.ktx.moxyPresenter
 
@@ -34,14 +34,15 @@ class RepositoriesFragment : MvpAppCompatFragment(), UsersView, BackButtonListen
     private val vb
         get() = _vb!!
 
-
+    private var repositorySubcomponent: RepositorySubcomponent? = null
     private val presenter: RepositoriesPresenter by moxyPresenter {
-        RepositoriesPresenter(
-            AndroidSchedulers.mainThread()
-        ).apply {
-            App.instance.appComponent.inject(this)
+
+        repositorySubcomponent = App.instance.initRepositorySubcomponent()
+        RepositoriesPresenter().apply {
+            repositorySubcomponent?.inject(this)
         }
     }
+
     var adapter: RepositoriesRVAdapter? = null
 
     override fun onCreateView(
@@ -60,7 +61,7 @@ class RepositoriesFragment : MvpAppCompatFragment(), UsersView, BackButtonListen
         _vb = null
     }
 
-    @SuppressLint("SuspiciousIndentation")
+
     override fun init() {
         vb.apply {
             rvRepositories.layoutManager = LinearLayoutManager(context)
@@ -73,6 +74,11 @@ class RepositoriesFragment : MvpAppCompatFragment(), UsersView, BackButtonListen
 
     override fun updateList() {
         adapter?.notifyDataSetChanged()
+    }
+
+    override fun release() {
+        repositorySubcomponent = null
+        App.instance.releaseRepositorySubComponent()
     }
 
     override fun backPressed() = presenter.backPressed()
